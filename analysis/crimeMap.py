@@ -5,6 +5,8 @@ import folium
 import geopandas as gpd
 from owslib.wfs import WebFeatureService
 
+from vworld import VWORLD_API_KEY
+
 url = 'https://geo.safemap.go.kr/geoserver/safemap/wms?'
 wfs = WebFeatureService(url=url)
 params = dict(service='wfs', version='1.1.1', typeName='safemap:A2SM_CRMNLSTATS',
@@ -23,7 +25,7 @@ def get_emdcode(p):
         "point": f"{p.x},{p.y}",
         "format": "json",
         "type": "parcel",
-        "key": "CAAABC8F-5A97-3763-9580-B3F36F6372A1",
+        "key": VWORLD_API_KEY,
         "simple": "true"
     }
     response = requests.get(apiurl, params=params)
@@ -44,7 +46,7 @@ seoul_geo = json.loads(c)
 vworld = folium.TileLayer(
         tiles=''.join([
             "http://api.vworld.kr/req/wmts/1.0.0/",
-            "CAAABC8F-5A97-3763-9580-B3F36F6372A1",     # VWorld API Key 
+            VWORLD_API_KEY,     # VWorld API Key 
             "/Hybrid/{z}/{y}/{x}.png"
         ]),
         attr='Vworld',
